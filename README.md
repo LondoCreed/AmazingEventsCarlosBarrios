@@ -1,1 +1,3 @@
 # AmazingEventsCarlosBarrios
+Este es un archivo ReadMe, para el poryecto en curso, a continuacion dejo mas datos.
+En construccion...

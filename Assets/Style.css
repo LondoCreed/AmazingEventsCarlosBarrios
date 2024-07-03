@@ -1,0 +1,16 @@
+/* .nav-link{
+    background-color: rgb(219, 58, 90);
+} */
+.layout{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.tam{
+    height: 20vh;
+}
+.ban{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
