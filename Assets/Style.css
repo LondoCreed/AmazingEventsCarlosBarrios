@@ -1,6 +1,7 @@
-/* .nav-link{
-    background-color: rgb(219, 58, 90);
-} */
+*{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
 .layout{
     display: flex;
     flex-direction: column;
