@@ -23,3 +23,11 @@
     width: 100%;
     height: 100%;
 }
+
+.card-text{
+    min-height: 100px;
+}
+
+.imgcard{
+    min-height: 250px;
+}
