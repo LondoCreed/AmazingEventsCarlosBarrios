@@ -205,7 +205,7 @@ for (let i = 0; i < data.events.length; i++) {
     tarjeta.id = "tarjetaP"
     tarjeta.innerHTML = `
 
-     <div id="tarjetaP" class="card" style="width: 300px">
+     <div id="tarjetaP" class="card" style="width: 43vh">
           <img class="imgcard h-50" src="${data.events[i].image}" class="card-img-top" alt="" />
           <div class="card-body">
             <h5 class="card-title">${data.events[i].name}</h5>
