@@ -204,9 +204,7 @@ for (let i = 0; i < data.events.length; i++) {
     let master = data.currentDate
     if (master > data.events[i].date) {
 
-    let tarjeta = document.createElement ("div")
-    tarjeta.id = "tarjetaP"
-    tarjeta.innerHTML = `
+    contenido.innerHTML += `
 
      <div id="tarjetaP" class="card" style="width: 43vh">
           <img class="imgcard h-50" src="${data.events[i].image}" class="card-img-top" alt="" />
@@ -223,7 +221,7 @@ for (let i = 0; i < data.events.length; i++) {
         </div>
         
         `
-        contenido.appendChild(tarjeta)
+        
         
     }
 

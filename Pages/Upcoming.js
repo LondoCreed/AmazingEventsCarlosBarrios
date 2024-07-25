@@ -201,31 +201,29 @@ let contenido = document.getElementById("almacDos")
 
 
 for (let i = 0; i < data.events.length; i++) {
-    let master = data.currentDate
-    if (master < data.events[i].date) {
+  let master = data.currentDate
+  if (master < data.events[i].date) {
 
-    let tarjeta = document.createElement ("div")
-    tarjeta.id = "tarjetaP"
-    tarjeta.innerHTML = `
+  contenido.innerHTML += `
 
-     <div id="tarjetaP" class="card" style="width: 43vh">
-          <img class="imgcard h-50" src="${data.events[i].image}" class="card-img-top" alt="" />
-          <div class="card-body">
-            <h5 class="card-title">${data.events[i].name}</h5>
-            <p class="card-text">
-              ${data.events[i].description}
-            </p>
-            <div class="d-flex justify-content-between">
-              <span>Price: $${data.events[i].price}</span>
-              <a href="./Pages/Details.html" class="btn btn-primary w-50">Details</a>
-            </div>
+   <div id="tarjetaP" class="card" style="width: 43vh">
+        <img class="imgcard h-50" src="${data.events[i].image}" class="card-img-top" alt="" />
+        <div class="card-body">
+          <h5 class="card-title">${data.events[i].name}</h5>
+          <p class="card-text">
+            ${data.events[i].description}
+          </p>
+          <div class="d-flex justify-content-between">
+            <span>Price: $${data.events[i].price}</span>
+            <a href="./Pages/Details.html" class="btn btn-primary w-50">Details</a>
           </div>
         </div>
-        
-        `
-        contenido.appendChild(tarjeta)
-        
-    }
+      </div>
+      
+      `
+      
+      
+  }
 
     
         
