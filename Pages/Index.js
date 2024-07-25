@@ -225,29 +225,3 @@ contenido.appendChild(tarjeta)
 }
 
 
-
-
-
-
-
-
-
-/* function tarjeta(eventos) {
-    const contenedorTarjeta = document.createElement ('div')
-    contenedorTarjeta.className = 'card'
-
-    contenedorTarjeta.innerHTML = `
-    <img src = "${eventos.image}" alt ="${eventos.name}"
-    <h3>${eventos.name}</h3>
-    <p>${eventos.date}</p>
-    <p>${eventos.description}</p>
-    <p>Precio: $${eventos.price}</p>
-    `
-    contenido.appendChild(contenedorTarjeta)
-}
-
-function generar() {
-    data.events.forEach(eventos => {
-        tarjeta(eventos)
-    });
-} */
