@@ -1,4 +1,4 @@
-# AmazingEventsCarlosBarrios
+# AmazingEventsCarlosRene
 Este es un archivo ReadMe, para el poryecto en curso, a continuacion dejo mas datos.
 
 Pasos para ejecutar el sitio
