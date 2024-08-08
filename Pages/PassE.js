@@ -197,36 +197,106 @@ const data = {
   };
 
 
-let contenido = document.getElementById("almacDos")
+  let mostrarTarjetas = (events) => {
+    let contenido = document.getElementById("almacTres")
+    let TarjetasIncial = ''
 
-
-for (let i = 0; i < data.events.length; i++) {
-    let master = data.currentDate
-    if (master > data.events[i].date) {
-
-    contenido.innerHTML += `
-
-     <div id="tarjetaP" class="card" style="width: 43vh">
-          <img class="imgcard h-50" src="${data.events[i].image}" class="card-img-top" alt="" />
-          <div class="card-body">
-            <h5 class="card-title">${data.events[i].name}</h5>
-            <p class="card-text">
-              ${data.events[i].description}
-            </p>
-            <div class="d-flex justify-content-between">
-              <span>Price: $${data.events[i].price}</span>
-              <a href="./Pages/Details.html" class="btn btn-primary w-50">Details</a>
+    let fechaActual = data.currentDate
+    let eventosPasados = events.filter(event => event.date < fechaActual)
+    
+    if (eventosPasados.length === 0) {
+      contenido.innerHTML = `
+        <p>Disculpe, no se encontraron coincidencias dentro de los parámetros solicitados.</p>
+      `;
+    } else {
+    
+      eventosPasados.forEach(event => {
+        TarjetasIncial += `
+          <div id="tarjetaP${event._id}" class="card" style="width: 300px">
+            <img class="imgcard h-50" src="${event.image}" class="card-img-top" alt="${event.name}" />
+            <div class="card-body">
+              <h5 class="card-title">${event.name}</h5>
+              <p class="card-text">${event.description}</p>
+              <div class="d-flex justify-content-between">
+                <span>Price: $${event.price}</span>
+                <a href="../Pages/Details.html?_id=${event._id}" class="btn btn-primary w-50">Details</a>
+              </div>
             </div>
           </div>
-        </div>
-        
-        `
-        
-        
+        `;
+      });
+      contenido.innerHTML = TarjetasIncial
+    }}
+    
+    
+    let chekeados = (cheks = data.events) =>{
+    
+      let desplegue = document.getElementById("chekers")
+      desplegue.innerHTML = ''
+    
+      let categoriasDuplicadas = []
+    
+      cheks.forEach((chek) => {
+        /* uso la negacion para que el funcionamiento sea inverso, 
+        si no esta dentro haga el push, dado que si se hace directo se duplican los cheks */
+        if (!categoriasDuplicadas.includes(chek.category)) {
+          categoriasDuplicadas.push(chek.category);
+    
+          let divChek = document.createElement('div');
+          divChek.className = 'form-check justify-content-center d-flex gap-1'
+          let idNew = categoriasDuplicadas.indexOf(chek.category)
+          divChek.innerHTML = `
+            <input class="form-check-input" type="checkbox" value="${chek.category}" id="flexCheck${idNew}" />
+            <label class="form-check-label" for="flexCheck${idNew}">
+              ${chek.category}
+            </label>
+          `
+          desplegue.appendChild(divChek);
+        }
+      })
+    
+    
+      let form = document.createElement('form')
+      form.className = 'xd d-flex';
+      form.innerHTML = `
+        <input class="form-control me-2" type="search" id="busquedaTexto" placeholder="Write to me please for" aria-label="Search" />
+        <button class="xd btn btn-outline-danger" type="button" id="buscar">
+          Search
+        </button>
+      `
+      desplegue.appendChild(form)
+    
+      desplegue.addEventListener('change', (event) => {
+        if (event.target.classList.contains('form-check-input')) {
+          conFiltro()
+        }
+      })
+      document.getElementById('buscar').addEventListener('click', conFiltro)
+      }
+    
+    let conFiltro = () =>{
+    
+      let cheksbox = document.querySelectorAll('#chekers .form-check-input:checked')
+      let categoriasSeleccionadas = []
+    
+      for (let i = 0; i < cheksbox.length; i++) {
+        categoriasSeleccionadas.push(cheksbox[i].value);
+      }
+      let buscar = document.getElementById('busquedaTexto').value.toLowerCase()
+    
+      let eventosFiltrados = data.events.filter(evento => {
+        let buscarPorCategoria = categoriasSeleccionadas.includes(evento.category) || categoriasSeleccionadas.length === 0;
+        let buscarPorTexto = evento.name.toLowerCase().includes(buscar) || evento.description.toLowerCase().includes(buscar);
+    
+        return buscarPorCategoria && buscarPorTexto
+      })
+      mostrarTarjetas(eventosFiltrados)
+    
+    
     }
-
+    mostrarTarjetas(data.events)
+    chekeados()
     
-        
-
     
-}
+    
+    

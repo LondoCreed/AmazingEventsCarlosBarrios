@@ -1,4 +1,4 @@
-
+//Arreglo Original
 
 const data = {
     currentDate: "2023-01-01",
@@ -198,28 +198,125 @@ const data = {
   };
 
 
-let contenido = document.getElementById("almac")
+// Realizamos la funcion mostrar tarjetas con un parametro definido
+let mostrarTarjetas = (events) => {
+let contenido = document.getElementById("almac") // Pocicionamos en el contenedor para generar
+let TarjetasIncial = '' //Limpieza de contenedor
 
-for (let i = 0; i < data.events.length; i++) {
-
-    contenido.innerHTML += `
-
-     <div id="tarjetaP" class="card" style="width: 300px">
-          <img class="imgcard h-50" src="${data.events[i].image}" class="card-img-top" alt="" />
-          <div class="card-body">
-            <h5 class="card-title">${data.events[i].name}</h5>
-            <p class="card-text">
-              ${data.events[i].description}
-            </p>
-            <div class="d-flex justify-content-between">
-              <span>Price: $${data.events[i].price}</span>
-              <a href="./Pages/Details.html" class="btn btn-primary w-50">Details</a>
-            </div>
+// Condicionamos que si el arreglo llega a estar vacio nos de un mensaje amable, esto llega a suceder aplicando filtros.
+if (events.length === 0) {
+  contenido.innerHTML = `
+    <p>Sorry, no matches were found within the requested parameters.</p>
+  `;
+} else {
+  //Iteramos el array y por cada elementos creamos una tarjeta con los datos de cada evento
+  events.forEach(event => {
+    TarjetasIncial += `
+      <div id="tarjetaP${event._id}" class="card" style="width: 300px">
+        <img class="imgcard h-50" src="${event.image}" class="card-img-top" alt="${event.name}" />
+        <div class="card-body">
+          <h5 class="card-title">${event.name}</h5>
+          <p class="card-text">${event.description}</p>
+          <div class="d-flex justify-content-between">
+            <span>Price: $${event.price}</span>
+            <a href="./Pages/Details.html?_id=${event._id}" class="btn btn-primary w-50">Details</a>
           </div>
         </div>
-        
-        `
-    
+      </div>
+    `;
+  });
+  contenido.innerHTML = TarjetasIncial // se imprime el contenido
+}}
+
+//Creamos la funcion con base a los eventos dentro del arreglo
+let chekeados = (cheks = data.events) =>{
+  // Pocicionamos en el contenedor para generar
+  //Limpieza de contenedor
+  let desplegue = document.getElementById("chekers")
+  desplegue.innerHTML = ''
+  //Creo un nuevo arreglo  para meter solo categorias no duplicadas
+  let categoriasDuplicadas = []
+
+  cheks.forEach((chek) => {
+    /* uso la negacion para que el funcionamiento sea inverso, 
+    si no esta dentro haga el push, dado que si se hace directo se duplican los cheks */
+    if (!categoriasDuplicadas.includes(chek.category)) {
+      categoriasDuplicadas.push(chek.category);
+      //Crea los cheks en base a el nuevo array sin duplicidad
+      let divChek = document.createElement('div');
+      divChek.className = 'form-check justify-content-center d-flex gap-1'
+      let idNew = categoriasDuplicadas.indexOf(chek.category)
+      divChek.innerHTML = `
+        <input class="form-check-input" type="checkbox" value="${chek.category}" id="flexCheck${idNew}" />
+        <label class="form-check-label" for="flexCheck${idNew}">
+          ${chek.category}
+        </label>
+      `
+      
+      desplegue.appendChild(divChek) // se imprime el contenido
+    }
+  })
+
+
+  //debido a que se limpia el contenedor antes de generar, mi busqueda se borraba, solucione desplegandola junto a los cheks(alfinal)
+  let form = document.createElement('form')
+  form.className = 'xd d-flex'
+  form.innerHTML = `
+    <input class="form-control me-2" type="search" id="busquedaTexto" placeholder="Write to me please for" aria-label="Search" />
+    <button class="xd btn btn-outline-danger" type="button" id="buscar">
+      Search
+    </button>
+  `
+  desplegue.appendChild(form)
+  /* agrege el escuchador para los cambios con el evento changue. Con el if verifico que el cambio escuchado venga de los cheks
+  si no uso el if el escuchador tambien le hace caso al textbox */
+  desplegue.addEventListener('change', (event) => {
+    if (event.target.classList.contains('form-check-input')) {
+      conFiltro();
+    }
+  })
+  //Aca se defini que el escuchador del textbox le haga caso al boton al hacer clik en el
+  document.getElementById('buscar').addEventListener('click', conFiltro)
+  }
+
+
+  /* desplegue.addEventListener('change', conFiltro)
+  document.getElementById('buscar').addEventListener('click', conFiltro)
+
+} */   // aplicar para que el filtro de texto cambie por changue al salir del input lo deje por si acaso queda mejor al final
+
+
+
+
+//Aca tenemos la funcion que filtra todo y se relaciona
+
+let conFiltro = () =>{
+  // Seleccionamos todos los chekbox marcados en el contenedor con id chekers y se hace un array temporal para almacenarlos
+  let cheksbox = document.querySelectorAll('#chekers .form-check-input:checked')
+  let categoriasSeleccionadas = []
+  //Realizamos un for, para agregarles el valor del chek a cada parte del nodelist "el valor es dado al generar el chek"
+  for (let i = 0; i < cheksbox.length; i++) {
+    categoriasSeleccionadas.push(cheksbox[i].value);
+  }
+  //Obtenemos el valor de el texto en al busqueda y se normaliza para evitar conflictos tipograficos
+  let buscar = document.getElementById('busquedaTexto').value.toLowerCase()
+  // Se aplica un filtro en el cual considera lo siguiente
+  let eventosFiltrados = data.events.filter(evento => {
+    //se verifica en el arreglo si esta la categoria seleccionada o si esta vacio
+    let buscarPorCategoria = categoriasSeleccionadas.includes(evento.category) || categoriasSeleccionadas.length === 0;
+    // se verifica si lo que escribimos en el textbox esta incluido en el nombre del evento o en al descripcion
+    let buscarPorTexto = evento.name.toLowerCase().includes(buscar) || evento.description.toLowerCase().includes(buscar);
+    //retornamos los valores del filtro
+    return buscarPorCategoria && buscarPorTexto
+  })
+  //si no aplica ninguno muestra todo lo contenido en data.events
+  mostrarTarjetas(eventosFiltrados)
+
+
 }
+// desplegamos tarjetas completas y cheks al cargar la pagina por primera vez
+mostrarTarjetas(data.events)
+chekeados()
+
 
 
